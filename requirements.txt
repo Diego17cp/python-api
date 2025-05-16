@@ -1,7 +1,11 @@
 fastapi
 uvicorn
 sqlalchemy
+sqlmodel
 psycopg2-binary
 pydantic
+pydantic-settings
 python-jose[cryptography]
 passlib[bcrypt]
+bcrypt
+python-multipart
