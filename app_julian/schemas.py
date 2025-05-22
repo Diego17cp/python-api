@@ -1,11 +1,12 @@
 from pydantic import BaseModel
+from typing import Optional
 from datetime import datetime
 
 class TaskBase(BaseModel):
     title: str
-    description: str = None
-    created_at: datetime = None
-    completed_at: datetime = None
+    description: Optional[str] = None
+    created_at: Optional[datetime] = None
+    completed_at: Optional[datetime] = None
 
 class TaskCreate(TaskBase):
     pass
@@ -14,6 +15,8 @@ class Task(TaskBase):
     id: int
     completed: bool
     owner_id: int
+    created_at: Optional[datetime] = None
+    completed_at: Optional[datetime] = None
     class Config:
         from_attributes = True  # <- Usar esto en vez de orm_mode para Pydantic v2
 

@@ -14,11 +14,14 @@ def create_task(
 ):
     return crud.create_task(db, task, user_id=current_user.id)
 
-@router.get("/tasks/", response_model=list[schemas.Task])
+@router.get("/", response_model=list[schemas.Task])
 def read_tasks(
     db: Session = Depends(database.get_db),
     current_user=Depends(auth.get_current_user)
 ):
+    """
+    Devuelve todas las tareas del usuario autenticado.
+    """
     return crud.get_tasks(db, user_id=current_user.id)
 
 @router.post("/tasks/group-local")
@@ -117,3 +120,23 @@ def suggest_ia_tasks(
         "sugerencias_ia": sugerencias,
         "total_pendientes": len(pending_tasks)
     }
+
+@router.patch("/tasks/{task_id}/complete")
+def complete_task(
+    task_id: int,
+    db: Session = Depends(database.get_db),
+    current_user=Depends(auth.get_current_user)
+):
+    """
+    Marca una tarea como completada y asigna la fecha actual a completed_at.
+    """
+    task = db.query(crud.models.Task).filter_by(id=task_id, owner_id=current_user.id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Tarea no encontrada")
+    if task.completed:
+        return {"message": "La tarea ya estaba completada"}
+    task.completed = True
+    task.completed_at = datetime.utcnow()
+    db.commit()
+    db.refresh(task)
+    return {"message": "Tarea marcada como completada", "task_id": task.id, "completed_at": task.completed_at}
