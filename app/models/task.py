@@ -1,9 +1,13 @@
 import enum 
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from sqlmodel import Field, Relationship
 from sqlalchemy import Enum as SQLEnum, Column
 from datetime import datetime, date
 from app.db.base import Base
+
+if TYPE_CHECKING:
+    from app.models.board import Board
+    from app.models.user import User
 
 class TaskStatus(enum.Enum):
     todo = "todo"

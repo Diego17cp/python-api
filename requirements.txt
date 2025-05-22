@@ -9,3 +9,5 @@ python-jose[cryptography]
 passlib[bcrypt]
 bcrypt
 python-multipart
+uvicorn
+openai

@@ -1,11 +1,11 @@
 from typing import List, Optional, TYPE_CHECKING
 from sqlmodel import Field, Relationship
 from app.db.base import Base
-from app.models.task import Task
 from app.models.user_teams import UserTeam
 
 if TYPE_CHECKING:
     from app.models.team import Team
+    from app.models.task import Task
 
 class User(Base, table=True):
     __tablename__ = "users"
@@ -19,6 +19,6 @@ class User(Base, table=True):
         link_model=UserTeam,
     )
     
-    tasks: List[Task] = Relationship(
+    tasks: List["Task"] = Relationship(
         back_populates="assigned_user"
     )

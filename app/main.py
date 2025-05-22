@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import auth, users, teams, boards, tasks
+from app.routers import ia
 from app.core.config import settings
 
 app = FastAPI(
@@ -22,6 +23,7 @@ app.include_router(teams.router, prefix="/teams", tags=["teams"])
 app.include_router(boards.router, prefix="/boards", tags=["boards"])
 app.include_router(tasks.router, prefix="/tasks", tags=["tasks"])
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
+app.include_router(ia.router, prefix="/ia", tags=["ia"])
 @app.get("/")
 async def root():
     return {"message": "Welcome to the Task Management API!"}
