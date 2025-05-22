@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
+from datetime import datetime
 from .database import Base
 
 class User(Base):
@@ -17,3 +18,5 @@ class Task(Base):
     completed = Column(Boolean, default=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="tasks")
+    created_at = Column(DateTime, default=datetime.utcnow)  # Nuevo campo
+    completed_at = Column(DateTime, nullable=True)          # Nuevo campo
